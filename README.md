@@ -15,6 +15,7 @@ Frontend: HTML, CSS
 Database: H2 (In-memory database for simplicity)
 
 **Structure ---**
+
     ├── src
     │   ├── main
     │   │   ├── java
@@ -33,7 +34,7 @@ Database: H2 (In-memory database for simplicity)
     │   │   │                   └── QuoteService.java
     │   │   └── resources
     │   └── test
-
+    |
     ├── pom.xml
     ├── mvnw
     ├── mvnw.cmd
