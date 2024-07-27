@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blurred Background Example</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="navbar">
+        <h1>Quote of the Day</h1>
+    </div>
+
+    <div class="container">
+        <div class="left">
+            <button onclick="getQuoteOfTheDay()"><b>Generate Quote</b></button>
+            <p id="quoteOfTheDay"></p>
+        </div>
+        <div class="right">
+            <h2 onclick="showModal('create')">Create a Quote</h2>
+            <h2 onclick="showModal('update')">Update a Quote</h2>
+            <h2 onclick="showModal('delete')">Delete a Quote</h2>
+            <h2 onclick="showModal('fetch')">Fetch Quotes by Name</h2>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <!-- Quote of the Day Overlay -->
+    <div id="quoteOverlay" class="modal">
+        <div id="quoteOverlayContent">
+            <img id="quoteGif" src="https://cdn.svgator.com/images/2022/11/Chart-run-cycle.gif" alt="Quote GIF" style="display: none;">
+            <p id="overlayQuoteText" class="typing"></p>
+        </div>
+    </div>
+  <footer>
+        &copy; 2024 Your Company. All rights reserved.
+    </footer>
+
+
+
+
+    <script>
+        const baseUrl = 'http://localhost:8080/quoteOfTheDay';
+
+     function getQuoteOfTheDay() {
+    fetch(baseUrl)
+        .then(response => response.text())
+        .then(data => {
+            const overlayQuoteText = document.getElementById('overlayQuoteText');
+            const quoteGif = document.getElementById('quoteGif');
+            overlayQuoteText.innerText = data;
+
+            // Show the GIF
+            quoteGif.style.display = 'block';
+
+            // Remove and re-add the animation class to reset it
+            overlayQuoteText.classList.remove('typing');
+            void overlayQuoteText.offsetWidth; // Trigger reflow
+            overlayQuoteText.classList.add('typing');
+
+            document.getElementById('quoteOverlay').style.display = 'flex';
+        });
+}
+
+
+
+        function showModal(action) {
+            const modal = document.getElementById('modal');
+            const modalBody = document.getElementById('modalBody');
+            modalBody.innerHTML = '';
+            
+            if (action === 'create') {
+                modalBody.innerHTML = `
+                    <h2>Create a Quote</h2>
+                    <input type="text" id="createName" placeholder="Enter name">
+                    <textarea id="createQuote" placeholder="Enter quote"></textarea>
+                    <button onclick="createQuote()">Create Quote</button>
+                `;
+            } else if (action === 'update') {
+                modalBody.innerHTML = `
+                    <h2>Update a Quote</h2>
+                    <input type="number" id="updateId" placeholder="Enter quote ID">
+                    <input type="text" id="updateName" placeholder="Enter name">
+                    <textarea id="updateQuote" placeholder="Enter quote"></textarea>
+                    <button onclick="updateQuote()">Update Quote</button>
+                `;
+            } else if (action === 'delete') {
+                modalBody.innerHTML = `
+                    <h2>Delete a Quote</h2>
+                    <input type="number" id="deleteId" placeholder="Enter quote ID">
+                    <button onclick="deleteQuote()">Delete Quote</button>
+                `;
+            } else if (action === 'fetch') {
+                modalBody.innerHTML = `
+                    <h2>Fetch Quotes by Name</h2>
+                    <input type="text" id="fetchName" placeholder="Enter name">
+                    <button onclick="fetchQuotesByName()">Fetch Quotes</button>
+                    <div id="quoteList" class="quote-list"></div>
+                `;
+            }
+
+            modal.style.display = 'flex';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('modal');
+            modal.style.display = 'none';
+        }
+
+        function closeQuoteOverlay() {
+            const quoteOverlay = document.getElementById('quoteOverlay');
+            quoteOverlay.style.display = 'none';
+        }
+
+        function createQuote() {
+            const name = document.getElementById('createName').value;
+            const quote = document.getElementById('createQuote').value;
+            fetch(`${baseUrl}/create`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name, quote })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert('Quote created successfully');
+            });
+        }
+
+        function updateQuote() {
+            const id = document.getElementById('updateId').value;
+            const name = document.getElementById('updateName').value;
+            const quote = document.getElementById('updateQuote').value;
+            fetch(`${baseUrl}/update`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ id, name, quote })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert('Quote updated successfully');
+            });
+        }
+
+        function deleteQuote() {
+            const id = document.getElementById('deleteId').value;
+            fetch(`${baseUrl}/${id}`, {
+                method: 'DELETE'
+            })
+            .then(response => {
+                alert('Quote deleted successfully');
+            });
+        }
+
+        function fetchQuotesByName() {
+            const name = document.getElementById('fetchName').value;
+            fetch(`${baseUrl}/messageByName?name=${name}`)
+                .then(response => response.json())
+                .then(data => {
+                    const quoteList = document.getElementById('quoteList');
+                    quoteList.innerHTML = '';
+                    data.forEach(quote => {
+                        const quoteItem = document.createElement('p');
+                        quoteItem.innerText = `ID: ${quote.id}, Name: ${quote.name}, Quote: ${quote.quote}`;
+                        quoteList.appendChild(quoteItem);
+                    });
+                });
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('modal');
+            const quoteOverlay = document.getElementById('quoteOverlay');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+            if (event.target == quoteOverlay) {
+                quoteOverlay.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,253 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    background-image: url('https://images.unsplash.com/photo-1510906594845-bc082582c8cc?q=80&w=2044&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 100vh;
+}
+
+body::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: inherit;
+    backdrop-filter: blur(1px); /* Adjust blur intensity as needed */
+    filter: blur(1px); /* Fallback for browsers that do not support backdrop-filter */
+    z-index: 0;
+}
+
+.navbar {
+    position: relative;
+    width: 100%;
+    height: 100px; /* Adjust height as needed */
+    background-image: url('https://images.unsplash.com/photo-1546640646-89b557854b23?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    box-shadow: 20px 25px 35px rgb(0, 0, 128); /* Adding shadow to the navbar */
+}
+
+.navbar::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: inherit;
+    backdrop-filter: blur(20px); /* Adjust blur intensity as needed */
+    filter: blur(20px); /* Fallback for browsers that do not support backdrop-filter */
+    z-index: 0;
+}
+
+.navbar h1 {
+    position: relative;
+    color: white; /* Or any color that contrasts well with the background */
+    z-index: 1;
+    margin: 0;
+    text-shadow: 5px 5px 5px rgb(192, 192, 192); /* Adding shadow to the text */
+}
+
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    width: 80%; /* Decreased width */
+    margin: 20px auto;
+    position: relative;
+    z-index: 1;
+}
+
+.left, .right {
+    background: rgba(255, 255, 255, 0.8); /* Transparent background */
+    backdrop-filter: blur(10px); /* Blur effect */
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    flex-basis: 35%; /* Decreased width */
+    margin: 0 10px; /* Shift more towards the left and right */
+    text-align: center;
+}
+
+.left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.right h2 {
+    cursor: pointer;
+    margin: 20px 0;
+    transition: color 0.3s ease;
+}
+
+.right h2:hover {
+    color: #007BFF;
+}
+
+button {
+	 box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: block;
+    width: 50%; /* Decreased width */
+    padding: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background-color: rgb(0, 128, 0);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.quote-list {
+    margin-top: 20px;
+}
+
+
+/* Modal styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(5px);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    animation: fadeIn 0.5s ease;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+@keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+input, textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input:focus, textarea:focus {
+    border-color: #007BFF;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    outline: none;
+}
+
+/* Quote of the Day Overlay */
+#quoteOverlay {
+    display: none;
+    position: fixed;
+    z-index: 2;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(5px);
+    justify-content: center;
+    align-items: center;
+}
+
+@keyframes typing {
+    from { width: 0; }
+    to { width: 100%; }
+}
+
+#quoteOverlayContent {
+    background: transparent;
+    padding: 20px;
+    max-width: 400px;
+    margin: auto;
+    text-align: center;
+    color: white;
+    font-size: 18px;
+    box-shadow: none;
+}
+
+@keyframes blink-caret {
+    from, to { border-color: transparent; }
+    50% { border-color: white; }
+}
+
+#overlayQuoteText {
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    border-right: 2px solid white; /* Adjust cursor thickness */
+    animation: typing 2s steps(30, end), blink-caret .75s step-end infinite;
+    line-height: 1.5; /* Adjust this to control the cursor height */
+}
+
+#quoteGif {
+    display: block;
+    max-width: 70%; /* Ensures the GIF does not exceed the width of the container */
+    width: 70px; /* Set the desired width */
+    height: 60px; /* Maintains the aspect ratio */
+    margin: 0 auto 20px; /* Center the GIF and add space below */
+    border-radius: 75%;
+}
+footer {
+    text-align: center;
+    padding: 10px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Optional: to add some background */
+    color: white; /* Text color */
+    font-size: 14px; /* Font size */
+    z-index: 1;
+    backdrop-filter: blur(10px); /* Add blur effect to the background */
+}
+
